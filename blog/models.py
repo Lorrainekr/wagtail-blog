@@ -8,31 +8,10 @@ from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
-
-from wagtail.snippets.models import register_snippet
 from django import forms
 
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
-
-
-@register_snippet
-class BlogCategory(models.Model):
-    name = models.CharField(max_length=255)
-    icon = models.ForeignKey(
-        'wagtailimages.Image', null=True, blank=True,
-        on_delete=models.SET_NULL, related_name='+'
-    )
-
-    panels = [
-        FieldPanel('name'),
-        ImageChooserPanel('icon'),
-    ]
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name_plural = 'blog categories'
+from wagtail.snippets.models import register_snippet
 
 class BlogIndexPage(Page):
     intro = RichTextField(blank=True)
@@ -106,3 +85,22 @@ class BlogPageGalleryImage(Orderable):
         ImageChooserPanel('image'),
         FieldPanel('caption'),
     ]
+
+@register_snippet
+class BlogCategory(models.Model):
+    name = models.CharField(max_length=255)
+    icon = models.ForeignKey(
+        'wagtailimages.Image', null=True, blank=True,
+        on_delete=models.SET_NULL, related_name='+'
+    )
+
+    panels = [
+        FieldPanel('name'),
+        ImageChooserPanel('icon'),
+    ]
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = 'blog categories'
